@@ -77,6 +77,9 @@ void action_answer_question(GtkWidget *widget, gpointer data) {
             if (ctx->input_field != NULL) {
                 strncpy(req.body.request_create_session.username, gtk_entry_get_text((GtkEntry*)ctx->input_field), 127);
             }
+            if (ctx->session_selector != NULL) {
+                strncpy(req.body.request_create_session.session_type, gtk_combo_box_text_get_active_text((GtkComboBoxText*)ctx->session_selector), 127);
+            }
             handle_response(roundtrip(req), 0);
             break;
         }

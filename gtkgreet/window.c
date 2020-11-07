@@ -79,6 +79,7 @@ void window_setup_question(struct Window *ctx, enum QuestionType type, char* que
         // Children of the box
         ctx->input_field = NULL;
         ctx->command_selector = NULL;
+        ctx->session_selector = NULL;
     }
     ctx->input_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
     GtkWidget *question_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
@@ -125,6 +126,16 @@ void window_setup_question(struct Window *ctx, enum QuestionType type, char* que
         g_signal_connect(selector_entry, "activate", G_CALLBACK(action_answer_question), ctx);
 
         gtk_container_add(GTK_CONTAINER(ctx->input_box), ctx->command_selector);
+
+        ctx->session_selector = gtk_combo_box_text_new_with_entry();
+        gtk_widget_set_size_request(ctx->session_selector, 384, -1);
+        gtk_combo_box_text_append((GtkComboBoxText*)ctx->session_selector, NULL, "wayland");
+        gtk_combo_box_text_append((GtkComboBoxText*)ctx->session_selector, NULL, "x11");
+        gtk_combo_box_text_append((GtkComboBoxText*)ctx->session_selector, NULL, "tty");
+        gtk_widget_set_halign(ctx->session_selector, GTK_ALIGN_END);
+        gtk_combo_box_set_active((GtkComboBox*)ctx->session_selector, 0);
+
+        gtk_container_add(GTK_CONTAINER(ctx->input_box), ctx->session_selector);
     }
 
     gtk_container_add(GTK_CONTAINER(ctx->body), ctx->input_box);
@@ -184,6 +195,7 @@ static void window_empty(struct Window *ctx) {
     ctx->input_box = NULL;
     ctx->input_field = NULL;
     ctx->command_selector = NULL;
+    ctx->session_selector = NULL;
 }
 
 static void window_setup(struct Window *ctx) {
@@ -227,6 +239,7 @@ static void window_setup(struct Window *ctx) {
         ctx->input_box = NULL;
         ctx->input_field = NULL;
         ctx->command_selector = NULL;
+        ctx->session_selector = NULL;
         window_update_clock(ctx);
     }
 
@@ -264,6 +277,9 @@ static void window_set_focus(struct Window *win, struct Window *old) {
         }
         if (old->command_selector != NULL && win->command_selector != NULL) {
             gtk_combo_box_set_active((GtkComboBox*)win->command_selector, gtk_combo_box_get_active((GtkComboBox*)old->command_selector));
+        }
+        if (old->session_selector != NULL && win->session_selector != NULL) {
+            gtk_combo_box_set_active((GtkComboBox*)win->session_selector, gtk_combo_box_get_active((GtkComboBox*)old->session_selector));
         }
         window_setup(old);
         gtk_widget_show_all(old->window);

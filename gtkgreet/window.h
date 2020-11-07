@@ -16,6 +16,7 @@ struct Window {
     GtkWidget *input_box;
     GtkWidget *input_field;
     GtkWidget *command_selector;
+    GtkWidget *session_selector;
     GtkWidget *clock_label;
 
 #ifdef LAYER_SHELL

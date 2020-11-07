@@ -148,6 +148,7 @@ struct response roundtrip(struct request req) {
     case request_type_create_session: {
         json_object_object_add(json_req, "type", json_object_new_string("create_session"));
         json_object_object_add(json_req, "username", json_object_new_string(req.body.request_create_session.username));
+        json_object_object_add(json_req, "session_type", json_object_new_string(req.body.request_create_session.session_type));
         break;
     }
     case request_type_start_session: {

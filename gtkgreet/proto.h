@@ -7,6 +7,7 @@
 
 struct request_create_session {
 	char username[128];
+	char session_type[128];
 };
 
 struct request_start_session {
